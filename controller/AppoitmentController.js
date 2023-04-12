@@ -21,6 +21,16 @@ async function getAppoitment(req, res, next) {
     }
 }
 
+async function getAppoitmentByID(req, res, next) {
+    let id=req.params.id
+    try {
+        const get = await Appointment.findById({_id:id})
+        res.status(200).json({ response: get })
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+
 async function deleteAppoitment(req, res, next) {
     let id = req.params.id
     try {
@@ -48,6 +58,6 @@ async function UpdateAppoitment(req,res,next){
 //  }
 //  data()
 
-const appoitment = { AddAppoitment, getAppoitment, deleteAppoitment, UpdateAppoitment}
+const appoitment = { AddAppoitment, getAppoitment, deleteAppoitment, UpdateAppoitment ,getAppoitmentByID}
 
 export default appoitment
