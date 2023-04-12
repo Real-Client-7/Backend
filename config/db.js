@@ -15,7 +15,4 @@ try {
     process.exit();
 }
 }
-
-
-
 export default connectDB;
