@@ -6,10 +6,10 @@ import {
   updateAdmin,
   deleteAdmin,
   Add,
-  login,
+  loginAdmin,
   logout,
 } from "../controllers/adminController.js";
-import verifyToken from "../middleware/authFun.js";
+import {verifyToken} from "../middleware/authFun.js";
 
 router.get("/", verifyToken, getAdmin);
 
@@ -19,9 +19,9 @@ router.put("/:id", verifyToken, updateAdmin);
 
 router.delete("/:id", verifyToken, deleteAdmin);
 
-router.post("/add", verifyToken, Add);
+router.post("/add", Add);
 
-router.post("/login", login);
+router.post("/login", loginAdmin);
 
 router.post("/logout", logout);
 

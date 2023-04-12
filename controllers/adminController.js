@@ -111,42 +111,36 @@ export function deleteAdmin(req, res, next) {
     .catch((err) => next(err));
 }
 
-export function login(req, res, next) {
-  const { username, password } = req.body;
-  console.log(req.body);
-  Model.findOne({ username })
-    .then((model) => {
-      if (!(username && password)) {
-        res.status(400).send({ status: 400, message: "All input is required" });
-      } else if (model) {
-        bcrypt
-          .compare(password, model.password)
-          .then((isMatch) => {
-            if (isMatch) {
-              const token = jwt.sign(
-                { model_id: model._id, username },
-                process.env.TOKEN_KEY,
-                { expiresIn: "5h" }
-              );
-              model.token = token;
-              res
-                .status(200)
-                .send({ status: 200, message: "logged in successfully",token });
-            } else {
-              res
-                .status(401)
-                .send({ status: 400, message: "Invalid Credentials" });
-            }
-          })
-          .catch((err) => next(err));
-      } else {
-        res.status(400).send({ status: 400, message: "Invalid Credentials" });
-      }
-    })
-    .catch((err) => {
-      next(err);
-    });
-}
+
+export const loginAdmin = async (req, res, next) => {
+  try {
+    const admin = await Model.findOne({ username: req.body.username });
+
+    // if admin doesn't exist
+    if (!admin) return res.json( "Admin not found");
+
+    // if password doesn't match
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.password,
+      admin.password
+    );
+    if (!isPasswordCorrect)
+      return res.json(( "Wrong username or password"));
+
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET_KEY);
+
+    const { password, ...otherDetails } = admin._doc;
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 900000,
+      })
+      .status(200)
+      .json({ ...otherDetails });
+  } catch (err) {
+    next(err);
+  }
+};
 
 export function logout(req, res, next) {
   res
@@ -154,13 +148,4 @@ export function logout(req, res, next) {
     .status(200)
     .send({ status: 200, message: "logged out successfully" });
 }
-const adminController = {
-  getAdmin,
-  Add,
-  getAdminById,
-  updateAdmin,
-  deleteAdmin,
-  login,
-  logout,
-};
-export default adminController;
+

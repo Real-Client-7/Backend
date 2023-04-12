@@ -11,6 +11,10 @@ const adminSchema = new Schema(
       type: String,
       required: true,
     },
+    isSuperAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     collection: "admin",
