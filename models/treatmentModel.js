@@ -2,10 +2,12 @@ import { Schema, model } from "mongoose";
 
 const treatment = new Schema({
     type: {
-        type:String
+        type:String ,
+        require:true,
     },
     nbr_of_tooth:{
-        type:Number
+        type:Number,
+        require:true,
     }
 },{
     collection:"Treatment"
