@@ -5,6 +5,7 @@ import connectDB from "./config/db.js"
 import bodyParser from "body-parser"
 import Appointment from "./routes/AppoitmentRoute.js"
 import patientRouter from "./routes/patientRoutes.js"
+import Treatment from "./routes/treatmentRoute.js"
 
 import Debt from "./routes/debtRoute.js"
 import Expense from "./routes/expenseRoute.js"
@@ -38,6 +39,7 @@ app.use("/expense" ,Expense)
 app.use("/bill" ,bill)
 app.use("/income" ,income)
 
+app.use("/treatment", Treatment)
 
 app.listen(port,(req , res)=>{
     console.log(`server listen on port ${port}`)
