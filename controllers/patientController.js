@@ -1,6 +1,6 @@
 import Patient from "../models/patientModel.js"
 import asyncHandler from 'express-async-handler';
-
+import appointment from "../models/Appointment.js";
 
 // add new Patient
 export const addPatient = asyncHandler(async(req,res) =>{
@@ -77,15 +77,15 @@ export const getAllPatients = asyncHandler(async (req, res) => {
   
 
 // GET patient by ID
-  export const getPatientById = asyncHandler(async (req, res) => {
-    const patient = await Patient.findById(req.params.id);
-    if (patient) {
-      res.json(patient);
-    } else {
-      res.status(404);
-      throw new Error("Patient not found");
-    }
-  });
+  // export const getPatientById = asyncHandler(async (req, res) => {
+  //   const patient = await Patient.findById(req.params.id);
+  //   if (patient) {
+  //     res.json(patient);
+  //   } else {
+  //     res.status(404);
+  //     throw new Error("Patient not found");
+  //   }
+  // });
 
   
 // UPDATE patient by ID
@@ -143,3 +143,14 @@ export const getAllPatients = asyncHandler(async (req, res) => {
       throw new Error("Patient not found");
     }
   });
+
+// GET patient by ID
+export const getPatientById = asyncHandler(async (req, res) => {
+  const patient = await Patient.findById(req.params.id).populate('appointments');
+  if (patient) {
+      res.json(patient);
+  } else {
+      res.status(404);
+      throw new Error("Patient not found");
+  }
+});

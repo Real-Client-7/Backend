@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model , mongoose } from "mongoose";
 
 const treatment = new Schema(
   {
@@ -9,6 +9,10 @@ const treatment = new Schema(
     nbr_of_tooth: {
       type: Number,
       require: true,
+    },
+    appointment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Appointment",
     },
   },
   {

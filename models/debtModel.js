@@ -6,9 +6,9 @@ const debtSchema = new Schema({
     type: Number,
     required: true,
   },
-  bill_id: {
-    type: Number,
-    required: true,
+  bill: {
+    type: Schema.Types.ObjectId,
+    ref: 'bill'
   }
 },
 {

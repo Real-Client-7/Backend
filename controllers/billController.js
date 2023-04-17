@@ -21,14 +21,15 @@ async function getBill (req , res){
 }
 
 async function getBillById (req , res){
-    let {id}= req.param
+    const id = req.params.id;
     try{
-        const data = await Bill.find({_id:id})
-        res.status(200).json({data})
+        const data = await Bill.findById(id);
+        res.status(200).json({ data });
     }catch(err){
-        res.status(404).json({err})
+        res.status(404).json({ err });
     }
 }
+
 
 async function deleteBill (req,res){
     let {id} = req.params

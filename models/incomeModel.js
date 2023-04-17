@@ -13,7 +13,11 @@ const income = new Schema({
         type:Date,
         required:[true , "this field is required"]
         
-    }
+    },
+    bill: {
+        type: Schema.Types.ObjectId,
+        ref: 'bill'
+      }
 },{
     collection:'income'
 })
