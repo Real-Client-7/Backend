@@ -8,6 +8,7 @@ import patientRouter from "./routes/patientRoutes.js"
 import Treatment from "./routes/treatmentRoute.js"
 import cors from "cors"
 
+
 import Debt from "./routes/debtRoute.js"
 import Expense from "./routes/expenseRoute.js"
 
@@ -40,7 +41,7 @@ app.use("/expense" ,Expense)
 app.use("/bill" ,bill)
 app.use("/income" ,income)
 
-app.use("/treatment", Treatment)
+app.use("/treatments", Treatment)
 
 app.listen(port,(req , res)=>{
     console.log(`server listen on port ${port}`)

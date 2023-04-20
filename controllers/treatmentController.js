@@ -1,18 +1,27 @@
-import Treatment from "../models/treatmentModel.js"
+import Treatment from "../models/treatmentModel.js";
+import asyncHandler from 'express-async-handler';
+import appoitment from "./AppoitmentController.js";
+import Appointment from "../models/Appointment.js";
+
 
 // ADD a Treatment
-function addTreatment(req, res, next) {
+async function addTreatment(req, res, next) {
     try {
-        let data = req.body
-        let treatmentData = new Treatment(data)
-        treatmentData.save()
-        res.status(200).json({ response: treatmentData })
+        const data = req.body;
+        const treatmentData = new Treatment(data);
+        const savedTreatment = await treatmentData.save(); 
+      
+      const appointmentId = data.appointment;
+      const appointment = await Appointment.findById(appointmentId);
+      appointment.treatments.push(savedTreatment._id);
+      await appointment.save();
+      
+      res.status(200).json({ response: savedTreatment });
     } catch (err) {
-        console.log(err);
-        res.status(500).json({ err })
+      res.status(500).json({ err });
     }
-}
-
+  }
+  
 // Get all the data of TReatment
 async function getTreatment(req, res, next) {
     try {

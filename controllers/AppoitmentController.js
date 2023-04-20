@@ -1,15 +1,23 @@
-import Appointment from "../models/Appointment.js"
+import Appointment from "../models/Appointment.js";
+import Patient from "../models/patientModel.js";
+import asyncHandler from 'express-async-handler';
 
+async function AddAppointment(req, res, next) {
+  try {
+    const data = req.body;
+    const appointmentData = new Appointment(data);
+    const savedAppointment = await appointmentData.save();
 
-function AddAppoitment(req, res, next) {
-    try {
-        let data = req.body
-        let appoitmentData = new Appointment(data)
-        appoitmentData.save()
-        res.status(200).json({ response: appoitmentData })
-    } catch (err) {
-        res.status(500).json({ err })
-    }
+    // Update the patient's appointments array with the new appointment ID
+    const patientId = data.patient;
+    const patient = await Patient.findById(patientId);
+    patient.appointments.push(savedAppointment._id);
+    await patient.save();
+
+    res.status(200).json({ response: savedAppointment });
+  } catch (err) {
+    res.status(500).json({ err });
+  }
 }
 
 async function getAppoitment(req, res, next) {
@@ -20,16 +28,17 @@ async function getAppoitment(req, res, next) {
         res.status(400).json(err)
     }
 }
-
-async function getAppoitmentByID(req, res, next) {
-    let id=req.params.id
-    try {
-        const get = await Appointment.findById({_id:id})
-        res.status(200).json({ response: get })
-    } catch (err) {
-        res.status(400).json(err)
+//get appointment by id
+export const getAppoitmentByID = asyncHandler(async (req, res) => {
+    const appointment = await Appointment.findById(req.params.id).populate('treatments');
+    if (appointment) {
+        res.json(appointment);
+    } else {
+        res.status(404);
+        throw new Error("Appointment not found");
     }
-}
+  });
+
 
 async function deleteAppoitment(req, res, next) {
     let id = req.params.id
@@ -58,6 +67,6 @@ async function UpdateAppoitment(req,res,next){
 //  }
 //  data()
 
-const appoitment = { AddAppoitment, getAppoitment, deleteAppoitment, UpdateAppoitment ,getAppoitmentByID}
+const appoitment = { AddAppointment, getAppoitment, deleteAppoitment, UpdateAppoitment ,getAppoitmentByID}
 
 export default appoitment

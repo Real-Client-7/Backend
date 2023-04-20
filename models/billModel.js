@@ -9,7 +9,11 @@ const bill = new Schema({
     },
     note:{
         type:String
-    }
+    },
+    appointment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Appointment'
+      }
 },{
     collection:"bill"
 }) 
