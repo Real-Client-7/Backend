@@ -6,6 +6,7 @@ import bodyParser from "body-parser"
 import Appointment from "./routes/AppoitmentRoute.js"
 import patientRouter from "./routes/patientRoutes.js"
 import Treatment from "./routes/treatmentRoute.js"
+import cors from "cors"
 
 import Debt from "./routes/debtRoute.js"
 import Expense from "./routes/expenseRoute.js"
@@ -27,7 +28,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(morgan('tiny'))
-
+app.use(cors());
 app.use("/admin" ,adminRouter)
 app.use("/appointment" ,Appointment)
 app.use("/patient" ,patientRouter)
