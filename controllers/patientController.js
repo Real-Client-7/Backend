@@ -58,16 +58,7 @@ export const addPatient = asyncHandler(async(req,res) =>{
 }
 
 ) 
-// export function addPatient (req,res){
-//     let data = req.body
-//     try{
-//         const patient = new Patient (data)
-//         patient.save()
-//         res.status(200).json({message : " patient created succ" , patient})
-//     }catch(err){
-//         res.status(400).json({err})
-//     }
-// }
+
 
 // GET all patients
 export const getAllPatients = asyncHandler(async (req, res) => {
@@ -76,16 +67,6 @@ export const getAllPatients = asyncHandler(async (req, res) => {
   });
   
 
-// GET patient by ID
-  // export const getPatientById = asyncHandler(async (req, res) => {
-  //   const patient = await Patient.findById(req.params.id);
-  //   if (patient) {
-  //     res.json(patient);
-  //   } else {
-  //     res.status(404);
-  //     throw new Error("Patient not found");
-  //   }
-  // });
 
   
 // UPDATE patient by ID

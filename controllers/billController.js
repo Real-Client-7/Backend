@@ -52,10 +52,7 @@ async function UpdateBill (req ,res){
     }
 }
 
-// const data =async ()=>{
-//    console.log( await Bill.find({}))
-// }
-// data()
+
 
 const bill = {addBill,getBill,getBillById,deleteBill,UpdateBill}
 

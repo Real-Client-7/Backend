@@ -62,10 +62,6 @@ async function UpdateAppoitment(req,res,next){
     }
 }
 
-// const data= async()=>{
-//      console.log( await Appointment.find({}))
-//  }
-//  data()
 
 const appoitment = { AddAppointment, getAppoitment, deleteAppoitment, UpdateAppoitment ,getAppoitmentByID}
 

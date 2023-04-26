@@ -30,10 +30,14 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(morgan('tiny'))
 app.use(cors());
-app.use("/admin" ,adminRouter)
+  app.use("/admin" ,adminRouter)
 app.use("/appointment" ,Appointment)
 app.use("/patient" ,patientRouter)
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 app.use("/debt" ,Debt)
 app.use("/expense" ,Expense)
