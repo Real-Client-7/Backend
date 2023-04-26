@@ -2,7 +2,9 @@ import Model from "../models/adminModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import asyncHandler from 'express-async-handler';
 dotenv.config();
+
 // this function is to fetch all the admins
 export function getAdmin(req, res, next) {
   Model.find({})
@@ -111,36 +113,41 @@ export function deleteAdmin(req, res, next) {
     .catch((err) => next(err));
 }
 
-
-export const loginAdmin = async (req, res, next) => {
+export const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  let adminExists
   try {
-    const admin = await Model.findOne({ username: req.body.username });
-
-    // if admin doesn't exist
-    if (!admin) return res.json( "Admin not found");
-
-    // if password doesn't match
-    const isPasswordCorrect = await bcrypt.compare(
-      req.body.password,
-      admin.password
-    );
-    if (!isPasswordCorrect)
-      return res.json(( "Wrong username or password"));
-
-    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET_KEY);
-
-    const { password, ...otherDetails } = admin._doc;
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        maxAge: 900000,
-      })
-      .status(200)
-      .json({ ...otherDetails });
-  } catch (err) {
-    next(err);
+      adminExists = await Model.findOne({ email: email })
   }
-};
+  catch (err) {
+      return new Error(err);
+  }
+  if (!email || !password) {
+      return res.status(404).json({ message: 'Please enter all fields' })
+
+  }
+  if (!adminExists) {
+      return res.status(404).json({ message: 'Admin not found' })
+  }
+  const isPassword = bcrypt.compareSync(password, adminExists.password);
+  if (!isPassword) {
+      return res.status(404).json({ message: 'Incorrect  Password' })
+  }
+
+  const token = jwt.sign({ id: adminExists._id }, process.env.JWT_SECRET_KEY, { expiresIn: '30d' });
+
+
+  res.cookie("auth-token", token, {
+      path: '/',
+      maxAge:900000,
+      httpOnly: true,
+      sameSite: 'lax'
+  });
+
+
+  return res.status(200).json({ message: 'Successfuly login', admin: adminExists, token });
+})
+
 
 export function logout(req, res, next) {
   res
