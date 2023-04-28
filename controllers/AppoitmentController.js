@@ -54,7 +54,7 @@ async function UpdateAppoitment(req,res,next){
     let id = req.params.id
     let data = req.body
     try{
-        await Appointment.updateOne({_id:id , $set:data})
+        await Appointment.updateOne({_id:id }, {$set:data})
         let response = await Appointment.findById({_id:id})
         res.status(200).json({message : "Update sucss" , response })
     }catch(err){
