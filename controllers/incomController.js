@@ -14,7 +14,7 @@ function addIncome (req ,res){
 
 async function getIncome (req ,res){
     try{
-        const data = await Income.find({})
+        const data = await Income.find({}).populate('bill');
         res.status(200).json({data})
     }catch(err){
         res.status(404).json({err})
@@ -24,7 +24,7 @@ async function getIncome (req ,res){
 async function getIncomeById (req ,res){
     let id = req.params.id
     try{
-        const data = await Income.findById({_id:id})
+        const data = await Income.findById(req.params.id).populate('bill');
         res.status(200).json({data})
     }catch(err){
         res.status(404).json({err})

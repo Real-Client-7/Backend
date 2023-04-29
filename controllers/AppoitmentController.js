@@ -22,7 +22,7 @@ async function AddAppointment(req, res, next) {
 
 async function getAppoitment(req, res, next) {
     try {
-        const get = await Appointment.find({})
+        const get = await Appointment.find({}).populate('patient').populate('treatments')
         res.status(200).json({ response: get })
     } catch (err) {
         res.status(400).json(err)
@@ -30,7 +30,7 @@ async function getAppoitment(req, res, next) {
 }
 //get appointment by id
 export const getAppoitmentByID = asyncHandler(async (req, res) => {
-    const appointment = await Appointment.findById(req.params.id).populate('treatments');
+    const appointment = await Appointment.findById(req.params.id).populate('patient').populate('treatments')
     if (appointment) {
         res.json(appointment);
     } else {
