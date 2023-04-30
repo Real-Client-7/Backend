@@ -45,7 +45,7 @@ export async function updateDebt(req,res,next){
     let id = req.params.id
     let data = req.body
     try{
-        await Debt.updateOne({_id:id , $set:data})
+        await Debt.updateOne({_id:id} , {$set:data})
         let response = await Debt.findById({_id:id})
         res.status(200).json({message : "Updated sucssfully" , response })
     }catch(err){

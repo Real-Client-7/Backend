@@ -11,4 +11,3 @@ router.put('/:id',Treatment.updateTreatment)
 
 
 export default router;
-

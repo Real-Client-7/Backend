@@ -2,13 +2,16 @@ import { Schema, model } from "mongoose";
 
 const bill = new Schema({
     total : {
+        type:Number
+    },
+    title:{
         type:String
     },
-    time: {
-        type:Date
+    paid: {
+        type:Number
     },
-    note:{
-        type:String
+    rest:{
+        type:Number
     },
     appointment: {
         type: Schema.Types.ObjectId,
@@ -19,3 +22,5 @@ const bill = new Schema({
 }) 
 const Bill = model('bill',bill)
 export default Bill
+
+//643d15b8e188ca0343673d75

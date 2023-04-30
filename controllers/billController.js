@@ -13,7 +13,7 @@ function addBill (req,res){
 
 async function getBill (req , res){
     try{
-        const data = await Bill.find({})
+        const data = await Bill.find({}).populate('appointment')
         res.status(200).json({data})
     }catch(err){
         res.status(404).json({err})
@@ -23,7 +23,7 @@ async function getBill (req , res){
 async function getBillById (req , res){
     const id = req.params.id;
     try{
-        const data = await Bill.findById(id);
+        const data = await Bill.findById(req.params.id).populate('appointment');
         res.status(200).json({ data });
     }catch(err){
         res.status(404).json({ err });
