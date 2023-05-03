@@ -62,7 +62,7 @@ export const addPatient = asyncHandler(async(req,res) =>{
 
 // GET all patients
 export const getAllPatients = asyncHandler(async (req, res) => {
-    const patients = await Patient.find({});
+    const patients = await Patient.find({}).populate('appointments')
     res.json(patients);
   });
   
