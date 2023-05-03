@@ -9,7 +9,7 @@ const patientSchema = mongoose.Schema({
 
   middle_name: {
     type: String,
-    required: [true, "Should not be empty"],
+    // required: [true, "Should not be empty"],
     trim: true,
   },
   last_name: {
@@ -48,7 +48,7 @@ const patientSchema = mongoose.Schema({
 
   occupation: {
     type: String,
-    required: [true, "Should not be empty"],
+    // required: [true, "Should not be empty"],
     trim: true,
   },
   address: {
@@ -59,18 +59,18 @@ const patientSchema = mongoose.Schema({
 
   referredBY: {
     type: String,
-    required: [true, "Should not be empty"],
+    // required: [true, "Should not be empty"],
     trim: true,
   },
 
   notes: {
     type: String,
-    required: [true, "Should not be empty"],
+    // required: [true, "Should not be empty"],
     trim: true,
   },
   medicalStatus: {
     type: String,
-    required: [true, "Should not be empty"],
+    // required: [true, "Should not be empty"],
     trim: true,
   },
 
@@ -80,6 +80,12 @@ const patientSchema = mongoose.Schema({
       ref: "Appointment",
     },
   ],
+},{
+  timestamps: {
+    createdAt: 'created_at', // Use `created_at` to store the created date
+    updatedAt: 'updated_at' // and `updated_at` to store the last updated date
+  }
+
 });
 
 const Patient = mongoose.model("Patient", patientSchema);
