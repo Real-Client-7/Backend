@@ -11,13 +11,13 @@ import {
 } from "../controllers/adminController.js";
 import {verifyToken} from "../middleware/authFun.js";
 
-router.get("/", verifyToken, getAdmin);
+router.get("/", getAdmin);
 
-router.get("/:id", verifyToken, getAdminById);
+router.get("/:id", getAdminById);
 
-router.put("/:id", verifyToken, updateAdmin);
+router.put("/:id", updateAdmin);
 
-router.delete("/:id", verifyToken, deleteAdmin);
+router.delete("/:id", deleteAdmin);
 
 router.post("/add", Add);
 
