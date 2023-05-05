@@ -11,10 +11,10 @@ async function addTreatment(req, res, next) {
         const treatmentData = new Treatment(data);
         const savedTreatment = await treatmentData.save(); 
       
-      const appointmentId = data.appointment;
-      const appointment = await Appointment.findById(appointmentId);
-      appointment.treatments.push(savedTreatment._id);
-      await appointment.save();
+    //   const appointmentId = data.appointment;
+    //   const appointment = await Appointment.findById(appointmentId);
+    //   appointment.treatments.push(savedTreatment._id);
+    //   await appointment.save();
       
       res.status(200).json({ response: savedTreatment });
     } catch (err) {
