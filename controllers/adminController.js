@@ -50,11 +50,13 @@ export function getAdminById(req, res, next) {
 export function updateAdmin(req, res, next) {
   let { id } = req.params;
   const NameB = req.body.username;
+  const Email = req.body.email;
   const passwordB = req.body.password;
+  const isSuperAdmin =req.body.isSuperAdmin
   Model.findById({_id:id}).then((model)=>{
     if(!model) return res.status(404).send({status:404, message:"Admin not found"});
   
-  if (NameB && passwordB) {
+  if (Email && NameB && passwordB && isSuperAdmin) {
     bcrypt
       .genSalt(10)
       .then((salt) => bcrypt.hash(passwordB, salt))
@@ -64,11 +66,31 @@ export function updateAdmin(req, res, next) {
           {
             $set: { username: NameB },
           },
-          { $set: { password: hashPassword } }
+          { $set: { password: hashPassword } },
+          { $set: { email: Email } },
+          { $set: { isSuperAdmin: isSuperAdmin } }
         )
       )
       .then((model) => {
         res.status(200).send({ status: 200, message: "success" });
+      })
+      .catch((err) => next(err));
+  }
+  if (Email && !NameB && !passwordB) {
+    Model.updateOne({ _id: id }, { $set: { email: Email } })
+      .then((model) => {
+        res
+          .status(200)
+          .send({ status: 200, message: "edit email successfully" });
+      })
+      .catch((err) => next(err));
+  }
+  if (isSuperAdmin && !Email && !NameB && !passwordB) {
+    Model.updateOne({ _id: id }, { $set: { isSuperAdmin: isSuperAdmin } })
+      .then((model) => {
+        res
+          .status(200)
+          .send({ status: 200, message: "edit isSuperAdmin successfully" });
       })
       .catch((err) => next(err));
   }

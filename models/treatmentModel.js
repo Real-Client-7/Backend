@@ -8,7 +8,6 @@ const treatment = new Schema(
     },
     nbr_of_tooth: {
       type: Number,
-      require: true,
     },
     appointment: {
       type: mongoose.Schema.Types.ObjectId,
