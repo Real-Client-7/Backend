@@ -59,7 +59,7 @@ async function updateTreatment(req,res,next){
     let id = req.params.id
     let data = req.body
     try{
-        await Treatment.updateOne({_id:id , $set:data})
+        await Treatment.updateOne({_id:id} , {$set:data})
         let response = await Treatment.findById({_id:id})
         res.status(200).json({message : "Update sucss" , response })
     }catch(err){
