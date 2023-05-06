@@ -11,7 +11,7 @@ import {
 } from "../controllers/adminController.js";
 import {verifyToken} from "../middleware/authFun.js";
 
-router.get("/", verifyToken, getAdmin);
+router.get("/"  , getAdmin);
 
 router.get("/:id", verifyToken, getAdminById);
 
