@@ -1,27 +1,20 @@
-import { Schema , model } from "mongoose";
+import mongoose from 'mongoose';
 
-const income = new Schema({
-    description : {
-        type:String,
-        required:[true , "this field is required"]
-    },
-    amount: {
-        type:Number,
-        required:[true , "this field is required"]
-    },
-    date: {
-        type:Date,
-        required:[true , "this field is required"]
-        
-    },
-    bill: {
-        type: Schema.Types.ObjectId,
-        ref: 'bill'
-      }
-},{
-    collection:'income'
-})
+const { Schema, model } = mongoose;
 
-const Income = model('income',income)
+const incomeSchema = new Schema({
+  amount: {
+    type: Number,
+    required: true,
+  },
+  patient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Patient',
+  },
+}, {
+  collection: 'incomes',
+});
 
-export default Income
+const Incomes = model('Incomes', incomeSchema);
+
+export default Incomes;  

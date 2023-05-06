@@ -1,19 +1,17 @@
 import express from "express"
 import {
-  getAll,
-  createDebt,
   deleteDebt,
-  updateDebt,
+  editDebt,
   getDebt,
 } from "../controllers/debtController.js";
 
 const router =express.Router()
 
-router.get("/", getAll);
-router.get("/:id", getDebt);
-router.post("/",  createDebt);
-router.put("/:id",updateDebt);
-router.delete("/:id",deleteDebt);
+router.get("/getDebt", getDebt);
+// router.get("/:id", getDebt);
+// router.post("/",  createDebt);
+router.put("/editDebt/:id",editDebt);
+router.delete("/deleteDebt/:id",deleteDebt);
 
 
 

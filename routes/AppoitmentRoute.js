@@ -9,6 +9,5 @@ router.get('/getAppoitment/:id',appoitment.getAppoitmentByID)
 router.delete('/deleteApointment/:id' , appoitment.deleteAppoitment)
 router.put('/update/:id',appoitment.UpdateAppoitment)
 
-
 export default router
 

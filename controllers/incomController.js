@@ -1,57 +1,89 @@
 import Income from "../models/incomeModel.js";
+import Patient from "../models/patientModel.js";
+import asyncHandler from 'express-async-handler';
+import Debt from '../models/debtModel.js'
 
 
-function addIncome (req ,res){
-    try{
-    const data = req.body
-    const income = new Income(data)
-    income.save()
-    res.status(200).json({message:"incom create successfully" , income})
-    }catch(err){
-    res.status(404).json({err})
+
+export const addIncome = asyncHandler(async (req, res) => {
+    try {
+      const { amount, patient: patientId } = req.body;
+  
+      const existingPatient = await Patient.findById(patientId);
+      if (!existingPatient) {
+        return res.status(404).json({ message: `Patient with ID ${patientId} not found` });
+      }
+  
+      const newIncome = new Income({
+        amount,
+        patient: patientId,
+      });
+  
+      // Save new income object
+      const savedIncome = await newIncome.save();
+  
+      // Update debt object for patient if it exists
+      const existingDebt = await Debt.findOne({ patient: patientId });
+      if (existingDebt) {
+        existingDebt.rest = parseFloat(existingDebt.rest) - (+amount);
+        await existingDebt.save();
+      }
+  
+      res.status(200).json({ response: savedIncome });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error.message });
     }
-}
+  });
+  
 
-async function getIncome (req ,res){
-    try{
-        const data = await Income.find({}).populate('bill');
-        res.status(200).json({data})
-    }catch(err){
-        res.status(404).json({err})
+
+
+export const getIncome = asyncHandler(async (req, res) => {
+  try {
+    const incomes = await Income.find({})
+      .populate('patient', 'first_name last_name')
+      .exec();
+
+    res.status(200).json({ data: incomes }); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to retrieve income data' }); 
+  }
+});
+
+
+export const updateIncome = asyncHandler(async (req, res) => {
+  try {
+    const income = await Income.findById(req.params.id);
+    if (income) {
+      income.amount = req.body.amount ?? income.amount; 
+      income.patient = req.body.patient ?? income.patient;
+      income.patientName = req.body.patientName ?? income.patientName;
+      const updatedIncome = await income.save();
+      res.status(200).json(updatedIncome); 
+    } else {
+      res.status(404).json({ message: 'Income not found' });
     }
-}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to update income data' });
+  }
+});
 
-async function getIncomeById (req ,res){
-    let id = req.params.id
-    try{
-        const data = await Income.findById(req.params.id).populate('bill');
-        res.status(200).json({data})
-    }catch(err){
-        res.status(404).json({err})
+export const deleteIncome = asyncHandler(async (req, res) => {
+  try {
+    const income = await Income.findByIdAndDelete(req.params.id);
+    if (income) {
+      res.status(200).json({ message: 'Income deleted successfully' }); 
+      res.status(404).json({ message: 'Income not found' });
     }
-}
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Failed to delete income data' }); 
+  }
+});
 
-async function deleteIncome (req,res){
-    let id = req.params.id
-    try{
-        const data = await Income.findByIdAndDelete({_id:id})
-        res.status(200).json({ message:"income deleted successfully" })
-    }catch(err){
-        res.status(404).json({err})
-    }
-} 
+const income = { addIncome, getIncome, updateIncome, deleteIncome };
 
-async function updateIncome (req ,res){
-    let id = req.params.id
-    let body = req.body 
-    try{
-        const data = await Income.findByIdAndUpdate({_id:id},{$set:body})
-        res.status(200).json({message:'Income Updated successfully' , data})
-    }catch(err){
-        res.status(404).json({err})
-    }
-}
-
-const income = {addIncome,getIncome,getIncomeById,deleteIncome,updateIncome}
-
-export default income
+export default income;
