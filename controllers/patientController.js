@@ -86,7 +86,7 @@ export const getAllPatients = asyncHandler(async (req, res) => {
       patient.maritalStatus = maritalStatus || patient.maritalStatus;
       patient.occupation = occupation || patient.occupation;
       patient.address = address || patient.address;
-      patient.referredBy = referredBy || patient.referredBy;
+      patient.referredBY = referredBY || patient.referredBY;
       patient.notes = notes || patient.notes;
       patient.medicalStatus = medicalStatus || patient.medicalStatus;
   
@@ -103,7 +103,7 @@ export const getAllPatients = asyncHandler(async (req, res) => {
         maritalStatus: updatedPatient.maritalStatus,
         occupation: updatedPatient.occupation,
         address: updatedPatient.address,
-        referredBy: updatedPatient.referredBy,
+        referredBy: updatedPatient.referredBY,
         notes: updatedPatient.notes,
         medicalStatus: updatedPatient.medicalStatus
       });
