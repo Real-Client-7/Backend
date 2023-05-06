@@ -13,6 +13,8 @@ const incomeSchema = new Schema({
   },
 }, {
   collection: 'incomes',
+  timestamps: true,
+
 });
 
 const Incomes = model('Incomes', incomeSchema);

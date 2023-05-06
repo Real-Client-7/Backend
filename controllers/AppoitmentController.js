@@ -7,14 +7,15 @@ import Debt from '../models/debtModel.js'
 
 export const AddAppointment=asyncHandler(async (req, res) =>{
     try {
-      const { time, date, note, total, patient: patientId, treatments } = req.body;
+      const { time, date, note, total, patient: patientId, treatments ,nbroftooth} = req.body;
       // Create new Appointment
       const newAppointment = new Appointment({
         date,
         note,
         total,
         patient: patientId,
-        treatments
+        treatments,
+        nbroftooth
       });
       const savedAppointment = await newAppointment.save();
   
@@ -51,7 +52,7 @@ export const getAppoitment = asyncHandler(async(req, res)=> {
         const get = await Appointment.find({}).populate('patient').populate('treatments')
         res.status(200).json({ response: get })
     } catch (err) {
-        res.status(400).json(err)
+        res.status(400).json(err)                                                                                                                                                                                                             
     }
 });
 //get appointment by id
