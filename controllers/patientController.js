@@ -71,7 +71,7 @@ export const getAllPatients = asyncHandler(async (req, res) => {
   
 // UPDATE patient by ID
   export const updatePatientById = asyncHandler(async (req, res) => {
-    const { first_name, middle_name, last_name, email, mobile, dob, gender, maritalStatus, occupation, address, referredBy, notes, medicalStatus } = req.body;
+    const { first_name, middle_name, last_name, email, mobile, dob, gender, maritalStatus, occupation, address, referredBY, notes, medicalStatus } = req.body;
   
     const patient = await Patient.findById(req.params.id);
   
