@@ -30,7 +30,9 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(morgan('tiny'))
 app.use(cors({
-  origin:["http://localhost:4600" , "https://bassam-monla-ycid.onrender.com"]
+  origin:["http://localhost:4600" , "https://bassam-monla-ycid.onrender.com"],
+  credentials:true,            //access-control-allow-credentials:true
+  optionSuccessStatus:200
 }));
   app.use("/admin" ,adminRouter)
 app.use("/appointment" ,Appointment)
