@@ -29,11 +29,7 @@ const port = process.env.PORT || 5000;
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.use(morgan('tiny'))
-app.use(cors({
-  origin:["http://localhost:4600" , "https://bassam-monla-ycid.onrender.com"],
-  credentials:true,            //access-control-allow-credentials:true
-  optionSuccessStatus:200
-}));
+app.use(cors());
   app.use("/admin" ,adminRouter)
 app.use("/appointment" ,Appointment)
 app.use("/patient" ,patientRouter)
